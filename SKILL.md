@@ -1,0 +1,52 @@
+---
+name: origin-editable-figures
+description: Create, edit, verify, and split native editable Origin/OriginPro OPJU scientific figures, with independent graph pages, embedded plotting data, PowerPoint OLE copy/paste, and optional HTML figure galleries. Use when the user requests Origin files or Origin editing/copying problems; ordinary statistical analysis or raster-only figure requests do not require this skill.
+---
+
+# Origin 可编辑科研作图
+
+把科研数据或已有 Origin 图整理成可继续编辑、可核对数据、方便挑选的原生项目。支持根据数据和参考图重建样式；当前用户要求和已有项目约定优先。
+
+## 默认交付与样式
+
+- **可编辑是原生对象**：散点、线、误差线/椭圆、坐标轴、图例和文字应分别可改。图应绑定项目内的数据表，不能把 PNG/SVG/PDF 插进 Origin 当作已完成的可编辑图。
+- **一图一页**：普通二维散点图默认一个图页、一个图层。多张图可以在一个 OPJU 中作为独立图页。多组散点或多个椭圆是同层的多个 plot，不必每组新建图层。确有双轴等结构需要时保留必要图层并解释。
+- 打开项目时显示一个可编辑单图，不默认显示合并总览。左上角一个“1”只是唯一图层；“1–21”通常表示同页有 21 个图层。
+- 用户说“把这几张拎出来”时，默认建立新文件夹，每张选中的图单独保存一个 OPJU，携带其必要数据，保留原图样式和坐标；不要重新拟合。
+- 主图默认白底、无额外外框，保留左/下坐标轴。对普通散点图关闭额外的 `layer.showFrame`，不要把所有轴和刻度一起删除。对已有图的样式修改仅改用户指定部分。
+- 跨图使用稳定、可区分的分组色号、图例顺序和样本映射；颜色不要只靠相近深浅区分。没有既定风格时可用 Arial、清楚的轴标、适度的小点和轻线条。具体尺寸不是强制模板。
+- 用户需要在 PPT 中双击返回 Origin 编辑时，使用 **复制页面 → PPT 中的 Origin 嵌入对象**。遵循 [PPT/OLE 说明](references/ppt-ole.md)，不要把“矢量图片可改”与“可双击返回 Origin”混为一谈。
+
+## 按当前任务工作
+
+1. 先定位用户指定的项目、坐标表和分组表。有示例 OPJU 时检查其图页、图层、轴和对象结构；截图用于外观参考，不能代替原始数据。以最新保存文件为准；若用户明确指正在编辑的未保存图，再处理对应活动会话。
+2. 核对样本 ID、行顺序、分组及特征/单位。保留原始输入和来源索引。能复用已验证坐标时直接复用；换数据子集且用户要求重新拟合时才重算，不能简单删掉原图点后声称已重新拟合。
+3. 优先使用本地 Origin 的 `originpro`/COM/LabTalk。批量工作用独立隐藏实例，不干扰用户已打开的项目。先读 [Origin 自动化说明](references/origin-automation.md)，包括运行环境、原生绘图、拆图和重开核验。
+4. PCA/t-SNE/UMAP、置信区间/椭圆或多图选图页任务，再读 [降维、椭圆与交付](references/ordination-and-delivery.md)。仅改外观或拆图时不增加统计分析和参数搜索。
+5. 新产物写入当前项目下清楚命名的输出文件夹。现有源 OPJU 保留；覆盖已有结果须符合当前任务授权。外部运行环境路径、菌属、样本量、特征数和算法参数都从当前项目读取。
+
+GO 富集分组柱形图可参考 [GO 示例说明](references/go-enrichment.md)，使用配套 `scripts/plot_go_enrichment.py`。示例中的布局和配色按当前需求调整，不自动筛选条目、排序或转换得分。
+
+## 保存后验收
+
+不能只检查文件存在或截图好看。保存后重新打开 OPJU，按本次改动检查：
+
+- 图页数、每页图层数、默认打开图页与交付结构一致。
+- 原始值/绘图坐标、样本与分组映射、颜色、绘制顺序及工作表引用正确。先核对样本 ID 再比坐标，防止“数值没变但贴错标签”。
+- 图内 plot 绑定正确工作表与列；独立图的点样式修改不联动其他图。新增椭圆能独立选中、改颜色/线宽。
+- 轴范围、图例、标签、外框状态符合要求；没有裁掉点或椭圆。实际从 Origin 导出代表性预览并查看；大批同模板至少覆盖各布局和极端范围。
+- 不把复制设置、剪贴板格式检查当作 PPT 嵌入成功。只有在 PPT 中实际得到 Origin OLE 对象，才能报告已验证嵌入；双击回写流程未测试就不要声称已测试。
+
+检查记录放在交付目录的 `verification/` 或当前项目的工作目录，按任务规模保留来源摘要、数量和必要哈希即可；不为小样式修改制造庞大报告。
+
+## 输出范围
+
+通常交付 OPJU、简短中文使用说明和必要的数据。批量选图时加本地 HTML 预览；比较总览按需要另提供，不取代独立图页。只拆几张图时交付几份 OPJU 即可。
+
+不默认创建 ZIP。用户要求清理已有重复压缩包时，先核验压缩内容均有完整解压副本，再只删除明确授权的文件。不要把项目私有数据、旧工作区路径或本机软件安装目录写成此技能的运行依赖。
+
+常见调用：
+
+- “用 `$origin-editable-figures` 把这些 PCA 图做成能分别编辑的 Origin 项目。”
+- “用 `$origin-editable-figures` 检查为什么这张图粘贴到 PPT 只能成为图片。”
+- “用 `$origin-editable-figures` 将 GraphA、GraphB 拆成两个独立 OPJU。”
