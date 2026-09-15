@@ -8,19 +8,33 @@
 
 `Origin.Application` 创建新实例，`ApplicationSI`/`op.attach()` 可接入用户现有实例。[Origin 官方会话说明](https://docs.originlab.com/com/difference-of-application-applicationsi-and-applicationcomsi/)
 
-批量新建/复制项目使用独立实例：
+批量新建/复制项目使用独立实例，**保存、重开核验、导出预览后，默认关闭本次实例**。文件留在输出目录；不能因为要展示预览就把自动化项目一直留在 Origin 中。只有用户明确要求继续在该窗口编辑，或尚需完成 PPT/OLE 粘贴时，才保留所需会话并说明原因。
+
+新脚本使用 [origin_session.py](../scripts/origin_session.py) 的 `OwnedOrigin`。先定位本技能实际目录，将其 `scripts` 加入 Python 的模块搜索路径（不要硬编码作者路径），在**新的外部 Python 进程**中执行：
 
 ```python
+from pathlib import Path
 import originpro as op
-try:
-    op.set_show(False)
+from origin_session import OwnedOrigin
+
+report = {}
+with OwnedOrigin(op, report=report, report_path=Path('output/verification/session.json')):
     op.new()
-    # 在独立实例中打开源项目、编辑、另存和核验。
-finally:
-    op.exit()
+    # 在独立实例中打开源项目、编辑、另存、重开核验和导出预览。
+    # 必须检查 save/open/export 的结果；退出不会自动保存未保存的改动。
+# 到这里才确认退出完成，或抛出明确的清理错误。
 ```
 
-不要对未确认归属的实例执行 `op.new()`、关闭项目或终止进程。只有用户要求操作活动会话时才附加；附加后结束自动化应释放连接，不能顺手退出用户程序。COM 启动错误时先区分沙箱启动限制、位数/依赖和 Origin 注册问题；有证据支持权限原因时通过平台权限机制重试，不反复杀进程或重装软件。
+- 上下文内部不要另行 `attach()`、`detach()`、`exit()`，也不要替换全局连接。此 helper 拒绝复用同一 Python 进程里已存在的连接，也拒绝在 Origin 内置 Python 中运行；每个并行任务使用自己的 Python 进程及输出目录。
+- helper 从它创建的 Origin 内部读取 PID，并持有该进程的只读等待句柄；不会用“新增了哪个 Origin 进程”猜测归属，也不会批量结束 Origin。这样另一个任务同时启动/退出也不会被误判为本任务实例。
+- 正常完成、绘图异常、`SystemExit` 和可被 Python 捕获的 Ctrl+C 都执行清理。**先退出并核查，再写核验记录**，磁盘/权限错误不能跳过关闭。退出错误或等待超时使任务失败；原有绘图错误也予以保留。报告中的 `origin_session.exit_verified` 为真才表示已确认退出。
+- 退出后不要再调用 `op` 查询版本、图页或导出预览：originpro 的延迟连接可能因此再启动一个实例。所有这些操作放在上下文内。
+- 已验证 Windows、OriginPro 2026、originpro 1.1.15。helper 需要可用的 Origin 内置 Python 来读取本实例 PID；若接口/权限不支持，会尝试关闭已创建实例并明确报错，不能退回去附加其他实例。
+- Python 被强制结束、系统崩溃、或 COM 调用卡死时，`finally` 无法保证执行；15 秒是退出调用返回后的等待时限，不是 COM 调用的强制超时。留下的实例须先确认归属和未保存内容，不得自动清除未知进程。
+
+会话退出接口依据 [Origin 外部 Python 示例](https://docs.originlab.com/externalpython/external-python-code-samples/)；退出可靠性须以实际进程核查为准。
+
+不要对未确认归属的实例执行 `op.new()`、关闭项目或终止进程。只有用户要求操作活动会话时才附加；附加后结束自动化应使用 `op.detach()` 释放连接，不能使用 `OwnedOrigin` 或顺手退出用户程序。COM 启动错误时先区分沙箱启动限制、位数/依赖和 Origin 注册问题；有证据支持权限原因时通过平台权限机制重试，不反复杀进程或重装软件。
 
 ## 原生二维散点图配方
 

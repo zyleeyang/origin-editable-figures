@@ -12,6 +12,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from origin_session import OwnedOrigin
+
 sys.dont_write_bytecode = True
 
 
@@ -75,8 +77,8 @@ def main():
     report = {'source': str(source), 'source_sha256': before,
               'retention': 'All non-graph pages retained; external links not audited.',
               'outputs': []}
-    try:
-        op.set_show(False)  # originpro creates its own multi-instance Application.
+    verification = output / 'verification'
+    with OwnedOrigin(op, report=report, report_path=verification/'extraction.json'):
         op.new()
         if not op.open(str(source)):
             raise RuntimeError('Origin could not open the source project.')
@@ -87,7 +89,6 @@ def main():
         original_graphs = {name: graph_state(op.find_graph(name)) for name in args.graphs}
         original_worksheets = worksheet_state(op)
         output.mkdir(parents=True, exist_ok=True)
-        verification = output / 'verification'
         verification.mkdir()
         for index, name in enumerate(args.graphs):
             if index:
@@ -145,13 +146,6 @@ def main():
         assert sha256(source) == before, 'Source file changed during extraction.'
         report['source_unchanged'] = True
         report['completed_utc'] = datetime.now(timezone.utc).isoformat()
-        (verification / 'extraction.json').write_text(
-            json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-    finally:
-        try:
-            op.exit()  # Only the independently created automation instance.
-        except Exception as error:
-            print('Origin cleanup did not complete: ' + str(error), file=sys.stderr)
     print(json.dumps(report, ensure_ascii=False), flush=True)
 
 

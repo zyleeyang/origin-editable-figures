@@ -83,6 +83,16 @@ python scripts/plot_go_enrichment.py --input examples/go-enrichment/demo.csv --o
 
 完整参数：`python scripts/plot_go_enrichment.py --help`。
 
+## 自动关闭与并行使用
+
+示例脚本保存、重新打开核验和导出预览后，会关闭自己创建的独立 Origin 实例。核验记录包含该实例的 PID 和 `origin_session.exit_verified`；关闭失败不会报告任务完成。绘图报错、可捕获的 Ctrl+C、核验记录写入失败也会执行清理。需要继续编辑时，重新打开输出的 OPJU 即可。
+
+其他项目可同时使用技能，但每个任务需要独立 Python 进程、Origin 实例和输出目录。不会附加或关闭你已打开的 Origin 项目，也不会强制结束未知进程。强制结束 Python 或 COM 卡死仍可能使清理无法执行，详见 [会话管理说明](references/origin-automation.md)。
+
+更新前保留自己的修改；正在运行的脚本不会自动切换到新代码。已开始的 Codex 对话可能还持有旧说明，下次作图前让它重新读取技能即可，无需中断当前作图。
+
+开发者可运行 `python -m unittest discover -s tests -v` 检查异常清理逻辑；这些单元测试不代替实际 Origin 验证。
+
 ## 在 Origin 中继续编辑
 
 - `GOData` → `PlotData` 中的 BP / CC / MF 列控制柱高；空白表示该条目不属于相应系列。
@@ -100,6 +110,7 @@ python scripts/plot_go_enrichment.py --input examples/go-enrichment/demo.csv --o
 | `references/` | 原生绘图、降维、GO 示例与 PPT 嵌入说明 |
 | `scripts/plot_go_enrichment.py` | 可配置输入路径的 GO 作图示例 |
 | `scripts/extract_graph_pages.py` | 从已有项目拆出独立图页 |
+| `scripts/origin_session.py` | 独立实例的关闭、退出核查及异常清理 |
 | `examples/go-enrichment/` | 示例数据和原生导出预览 |
 
 上传版不依赖作者机器的用户名、软件安装目录或研究项目路径。

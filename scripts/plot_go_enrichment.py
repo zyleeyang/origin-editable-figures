@@ -13,6 +13,8 @@ import platform
 import sys
 from pathlib import Path
 
+from origin_session import OwnedOrigin
+
 GROUPS = (
     ('Biological process', 'BP', '#25A17C'),
     ('Cellular component', 'CC', '#D96622'),
@@ -134,8 +136,7 @@ def build(args, source, data):
         obj = layer.add_line(a, b, c, d)
         obj.name, obj.color, obj.width = name, color, .55
 
-    try:
-        op.set_show(False)  # Starts an independent Application, never attach().
+    with OwnedOrigin(op, report=metadata, report_path=check_dir/'verification.json'):
         op.new()
         book = op.new_book('w', lname='GO enrichment data')
         book.name = 'GOData'
@@ -223,12 +224,7 @@ def build(args, source, data):
                         source_unchanged=True, origin_version=op.lt_float('@V'),
                         visual_review='Inspect go_enrichment.png, especially after changing label lengths or group sizes.')
         print('Saved and reopened: ' + str(target), flush=True)
-    finally:
-        (check_dir/'verification.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
-        try:
-            op.exit()
-        except Exception as exc:
-            print('Origin cleanup: ' + str(exc), file=sys.stderr)
+    print('Origin closed; verification complete.', flush=True)
 
 
 def main():
