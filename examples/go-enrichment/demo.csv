@@ -1,31 +1,19 @@
 GOterm,subgroup,Enrichment score
-single-organism metabolic process,Biological process,6.01
-cellular response to stress,Biological process,5.24
-phosphate-containing compound metabolic process,Biological process,5
-cellular metabolic process,Biological process,4.96
-phosphorus metabolic process,Biological process,4.93
-nucleobase-containing compound catabolic process,Biological process,4.68
-cellular response to stimulus,Biological process,4.59
-positive regulation of protein metabolic process,Biological process,4.59
-regulation of protein metabolic process,Biological process,4.58
-aromatic compound catabolic process,Biological process,4.52
-cytosol,Cellular component,6.52
-intracellular organelle lumen,Cellular component,4.98
-membrane-enclosed lumen,Cellular component,4.85
-organelle lumen,Cellular component,4.81
-vesicle,Cellular component,4.61
-membrane-bounded vesicle,Cellular component,4.32
-anchoring junction,Cellular component,4.3
-adherens junction,Cellular component,4.18
-extracellular organelle,Cellular component,4.1
-extracellular membrane-bounded organelle,Cellular component,4.1
-poly(A) RNA binding,Molecular function,5.31
-RNA binding,Molecular function,3.77
-protein phosphatase binding,Molecular function,3.05
-protein binding,Molecular function,2.55
-S100 protein binding,Molecular function,2.55
-phosphatase binding,Molecular function,2.43
-ubiquitin protein ligase binding,Molecular function,2.41
-small conjugating protein ligase binding,Molecular function,2.41
-enzyme binding,Molecular function,2.34
-structural constituent of muscle,Molecular function,2.31
+Synthetic biological process 01,Biological process,5.7
+Synthetic biological process 02,Biological process,5.1
+Synthetic biological process 03,Biological process,4.6
+Synthetic biological process 04,Biological process,4.2
+Synthetic biological process 05,Biological process,3.8
+Synthetic biological process 06,Biological process,3.1
+Synthetic cellular component 01,Cellular component,5.5
+Synthetic cellular component 02,Cellular component,4.8
+Synthetic cellular component 03,Cellular component,4.4
+Synthetic cellular component 04,Cellular component,3.9
+Synthetic cellular component 05,Cellular component,3.4
+Synthetic cellular component 06,Cellular component,2.7
+Synthetic molecular function 01,Molecular function,4.9
+Synthetic molecular function 02,Molecular function,4.3
+Synthetic molecular function 03,Molecular function,3.7
+Synthetic molecular function 04,Molecular function,3.3
+Synthetic molecular function 05,Molecular function,2.8
+Synthetic molecular function 06,Molecular function,2.2

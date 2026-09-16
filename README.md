@@ -1,29 +1,42 @@
 # Origin 可编辑科研作图
 
-把科研数据、参考样式或已有 Origin 图，整理成带有绘图数据、可继续编辑的 Origin / OriginPro 原生项目。
+根据科研数据、参考样式或已有 Origin 项目，创建和修改 **Origin / OriginPro 原生可编辑图**，保留绘图数据，核对数值与样式，并按需要交付独立图页或可在 PowerPoint 中返回 Origin 编辑的对象。
 
 **技能名：`origin-editable-figures`**
 
-![GO enrichment example](examples/go-enrichment/preview.png)
+适用于多种科研图的制作、样式复现和后续编辑。GO 分组柱形图是仓库中的一个可运行示例；技能的工作范围由当前数据、图型和交付要求决定。
 
-## 能做什么
+## 适用任务
 
-- 根据数据和参考图创建原生可编辑图，分别调整数据点、线、误差线、坐标轴、图例和文字。
-- 整理 PCA、t-SNE、UMAP 等科研图，核对坐标、分组、配色与数据来源。
-- 将选定图页拆成独立 OPJU，携带必要数据，并保留已有样式。
-- 按任务需要处理 Origin → PowerPoint 的 OLE 嵌入与回写核验。
-- 保存后重新打开，核验数据绑定并从 Origin 导出预览。
+| 任务 | 提供什么 | 技能处理的重点 |
+| --- | --- | --- |
+| 根据数据和参考图作图 | 数据表、参考图片或原生项目、所需样式 | 核对列和单位，选择原生图型，调整坐标轴、配色、图例和文字 |
+| 散点与降维图 | XY 坐标、样本和分组；需要分析时另提供原始数据与方法 | 样本映射、PCA/t-SNE/UMAP 坐标、点样式及椭圆含义 |
+| 折线、时间序列与 ROC 曲线 | 曲线数据、系列名称和已有统计结果 | 曲线顺序、范围、参照线、单位和指标标签 |
+| 柱形图与误差线 | 类别、数值、分组和误差定义 | 组序、系列颜色、误差范围与长标签；可用于富集结果等数据 |
+| 热图 | 数值矩阵、行列标签、色标要求 | 行列对应、缺失值、色标范围及格内数字的可读性 |
+| 修改或拆分已有图 | 最新保存的 OPJU 和具体修改要求 | 保留用户已有调整，局部修改，或把选定图页另存为独立 OPJU |
+| Origin → PowerPoint | 原生图和组装要求 | Origin OLE 嵌入、实际页面检查及编辑回写；复杂组图可配合 `origin-ppt-assembly` |
 
-参考图片用于指导外观。准确重建数据图需要对应数据；技能没有承诺从任意截图无损恢复原始数据。
+这是供 Codex 使用的技能：它依据当前任务编写或调整 Origin 自动化流程。仓库内的固定脚本覆盖 GO 示例和图页提取，其他图型需要按实际 Origin 接口适配、运行和验收。参考图片提供外观依据；准确绘图仍需要对应数值，不能从任意截图无损恢复原始数据。
+
+## 通常怎样完成一张图
+
+1. **确认数据与样式**：读取数据、分组及单位；从参考图或原生文件确定尺寸、字体、点线、轴和布局。只改样式时保留已有数值和统计结果。
+2. **制作原生图**：把必要数据写入 Origin 项目，建立可分别编辑的数据系列、坐标轴、图例和文字。批量新图先校准代表图。
+3. **查看实际预览并修正**：从 Origin 导出并打开预览，检查长标签、遮挡、裁切和对齐；有具体问题时修改后复查，通过即可结束，没有固定检查轮数。
+4. **重开核验与交付**：重新打开 OPJU，核对数据绑定、图页结构和所需编辑能力，交付文件与必要说明，关闭本任务创建的 Origin 实例。
+
+常见交付为 OPJU、预览图和简短使用说明。独立单图、批量选图页、PPT/OLE 或额外导出格式按任务需要提供。
 
 ## 使用条件
 
 - 可以访问本机文件和桌面软件的 Codex。
 - Windows，以及已安装、可正常运行的 Origin / OriginPro。
 - 用于自动化的 Python 环境，安装 `originpro` 及本任务需要的数据处理依赖。
-- PowerPoint 仅在需要 PPT 嵌入时使用。PPT 文件编辑可配合可用的演示文稿技能；本仓库不捆绑 PowerPoint 或其他技能。
+- PowerPoint 仅在需要 PPT 嵌入时使用。本仓库不捆绑 PowerPoint 或其他技能。
 
-本仓库的 GO 示例在 Windows、OriginPro 2026 和 Python 3.12 上验证。其他版本需要检查实际接口和导出效果。
+已验证的自动化环境包括 Windows、OriginPro 2026、Python 3.12 和 originpro 1.1.15。其他版本需要核对实际接口和导出效果；运行环境验证不等于每一种图型都已在该版本测试。
 
 ## 安装技能
 
@@ -52,73 +65,55 @@ python -m pip install -r requirements.txt
 
 ## 在 Codex 中使用
 
-提供数据文件与参考图，再输入：
+将自己的数据和参考文件提供给 Codex，并描述图型、样式和所需输出。例如：
 
-> 用 `$origin-editable-figures`，根据这份数据和参考图制作可编辑的 Origin 图。保留原始数值和分组，每张图独立成页，保存后重新打开核验。
+> 用 `$origin-editable-figures`，根据这份 XY 数据和分组表，按参考图的配色与布局制作可编辑散点图。保留数值和样本对应关系，每张图独立成页，保存后重新打开核验。
 
-或：
+> 用 `$origin-editable-figures`，把这份曲线数据画成 Origin 折线图，使用参考图的线型、坐标轴和图例。保留曲线原始坐标，并提供实际 Origin 导出预览。
 
-> 用 `$origin-editable-figures`，从这个 OPJU 中将 GraphA 和 GraphB 拆成两个独立文件，保留样式和数据。
+> 用 `$origin-editable-figures`，把这份矩阵制作成可编辑热图。保留行列顺序和数值，按参考图设置色标，并检查长名称与格内数字。
 
-## 运行 GO 柱形图示例
+> 用 `$origin-editable-figures`，仅修改这个 OPJU 的字体和线宽，保留我已经调整的配色、位置和轴范围；然后将 GraphA 和 GraphB 拆成独立文件。
 
-示例数据包含 30 个 GO 条目，BP、CC、MF 各 10 个。数值用于演示作图，不在此执行 GO 富集分析。
+## 质量检查与后续编辑
 
-在仓库目录执行：
+数据正确性、视觉质量和原生可编辑性分别验收。文件保存成功或成功导出 PNG，均不能代替实际看图；PPT 获得 Origin 嵌入对象，也不等于已经验证双击编辑回写。
 
-```powershell
-python scripts/plot_go_enrichment.py --input examples/go-enrichment/demo.csv --validate-only
-python scripts/plot_go_enrichment.py --input examples/go-enrichment/demo.csv --output-dir outputs/go-demo
-```
+配套脚本的 `review_status` 将数据检查与视觉、交互编辑检查分开；未执行的检查保持 `not_tested`。详细检查方法见 [样式、预览与修正](references/visual-quality.md)。[样式记录示例](references/style-profile.example.json)只展示记录格式，不会被绘图脚本自动执行，也不是统一默认版式。
 
-输出：
-
-- `go_enrichment.opju`：一个图页、一个图层、三个原生柱形系列，内嵌数据。
-- `go_enrichment.png`：从重开后的 Origin 项目导出的预览。
-- `verification/verification.json`：数据与图形结构核验记录。
-
-输出目录须为新目录或空目录。更换自己的数据时，支持 `.csv` 和 `.xlsx`，列名为 `GOterm`、`subgroup`、`Enrichment score`。组内保持输入顺序，图中按 BP、CC、MF 排列；不会自动筛选 Top N、重新排序或转换得分。三个分组都需要有数据，各组条目数可以不同。
-
-`--label-size`、`--rotation`、`--page-width`、`--page-height`、`--y-max` 和 `--y-step` 可调整样式。修改条目数或名称长度后，需要检查预览中的文字和分组框。
-
-完整参数：`python scripts/plot_go_enrichment.py --help`。
-
-## 样式与视觉检查
-
-技能按当前参考确定尺寸、字体、点线、配色和布局，先校准代表图，再批量制作。模型需要打开真实导出的预览，针对具体缺陷修正并重新检查；通过即可结束，没有固定检查轮数。小修改沿用已有文件，不重新设计整组图。
-
-脚本的 `review_status` 将数据检查与视觉、交互编辑检查分开：脚本自动通过的数据核验，不会自动把后两项标为通过。成功导出PNG也不代表模型已经查看过它。程序退出状态和 `task_status` 只说明脚本运行情况，完整交付还需相应视觉及编辑验收。
-
-[视觉检查流程](references/visual-quality.md)包含长标签、热图、ROC、散点及组图的检查方向；[样式记录示例](references/style-profile.example.json)用于保存当前任务的参数，不会被绘图脚本自动执行，也不是所有图的默认版式。
+在 Origin 中，可通过图的工作表修改绘图数据，双击数据系列、轴、图例或文字调整对应对象。表名和列用途以当前交付说明为准；预计算坐标或曲线是否随源数据变化自动重算，需要单独确认。PPT 内嵌副本与外部 OPJU 不会自动同步。
 
 ## 自动关闭与并行使用
 
-示例脚本保存、重新打开核验和导出预览后，会关闭自己创建的独立 Origin 实例。核验记录包含该实例的 PID 和 `origin_session.exit_verified`；关闭失败不会报告任务完成。绘图报错、可捕获的 Ctrl+C、核验记录写入失败也会执行清理。需要继续编辑时，重新打开输出的 OPJU 即可。
+配套脚本保存、重开核验并导出预览后，会关闭自己创建的独立 Origin 实例，核查实际退出结果。异常和可捕获的中断也会执行清理；关闭失败不会报告任务完成。
 
-其他项目可同时使用技能，但每个任务需要独立 Python 进程、Origin 实例和输出目录。不会附加或关闭你已打开的 Origin 项目，也不会强制结束未知进程。强制结束 Python 或 COM 卡死仍可能使清理无法执行，详见 [会话管理说明](references/origin-automation.md)。
+其他项目可同时使用技能，每个任务应使用独立 Python 进程、Origin 实例和输出目录。不会附加或关闭已打开的用户项目，也不会强制结束未知进程。强制结束 Python 或 COM 卡死仍可能使清理无法执行，详见 [Origin 自动化与会话管理](references/origin-automation.md)。
 
-更新前保留自己的修改；正在运行的脚本不会自动切换到新代码。已开始的 Codex 对话可能还持有旧说明，下次作图前让它重新读取技能即可，无需中断当前作图。
+更新前保留自己的修改。正在运行的脚本继续使用已加载的代码；已经读取旧技能说明的对话，在下次作图前重新读取即可。
 
-开发者可运行 `python -m unittest discover -s tests -v` 检查异常清理逻辑；这些单元测试不代替实际 Origin 验证。
+## 可运行示例与参考
 
-## 在 Origin 中继续编辑
-
-- `GOData` → `PlotData` 中的 BP / CC / MF 列控制柱高；空白表示该条目不属于相应系列。
-- `Tick label` 列控制横轴显示文字，带有 Origin 颜色格式。保留格式，修改其中的名称即可。
-- `Source` 表是原始输入快照。绘图修改使用 `PlotData` 表。
-- 双击柱形调整系列样式；双击坐标轴调整范围和刻度。分组框、分组名称与纵轴标题均可编辑。
-- 图例关联三个数据系列；外部 OPJU 与 PPT 中的嵌入副本不会自动同步。
-
-## 仓库内容
+- [GO 分组柱形图示例](references/go-enrichment.md)：合成数据、运行命令、原生预览及编辑方法，演示分组柱形图这一种用法。
+- [Origin 自动化](references/origin-automation.md)：独立实例、原生散点与曲线、图页提取、保存后重开核验。
+- [降维、椭圆与选图交付](references/ordination-and-delivery.md)：坐标与样本映射、椭圆含义、本地选图页。
+- [PowerPoint OLE](references/ppt-ole.md)：复制页面、原生嵌入与编辑回写的验证边界。
 
 | 文件或目录 | 用途 |
 | --- | --- |
-| `SKILL.md` | 技能入口与工作规则 |
+| `SKILL.md` | 通用技能入口与工作规则 |
 | `agents/openai.yaml` | Codex 界面名称与调用提示 |
-| `references/` | 原生绘图、降维、GO 示例与 PPT 嵌入说明 |
-| `scripts/plot_go_enrichment.py` | 可配置输入路径的 GO 作图示例 |
-| `scripts/extract_graph_pages.py` | 从已有项目拆出独立图页 |
+| `references/` | 按任务选读的工作方法与示例 |
+| `scripts/extract_graph_pages.py` | 从已有项目提取独立图页 |
 | `scripts/origin_session.py` | 独立实例的关闭、退出核查及异常清理 |
-| `examples/go-enrichment/` | 示例数据和原生导出预览 |
+| `scripts/plot_go_enrichment.py` | GO 分组柱形图的专项示例脚本 |
+| `examples/go-enrichment/` | 合成演示数据和对应的 Origin 原生导出预览 |
+| `tests/` | 会话清理逻辑的单元测试 |
 
-上传版不依赖作者机器的用户名、软件安装目录或研究项目路径。
+开发者可运行 `python -m unittest discover -s tests -v`；单元测试不代替实际 Origin 验证。
+
+## 数据与发布边界
+
+- 当前演示数据使用明确标注的虚构条目和人为设置的数值，不代表真实实验、真实 GO 条目或富集分析结论。
+- 使用自己的数据时，建议把输入、输出和核验记录放在仓库外。OPJU、PPT、预览图和日志也可能包含数据、样本名称或本机路径，需要作为数据文件审查。
+- 账号凭据、API 密钥、环境配置和私人研究文件不应提交到仓库。凭据由使用者在本机配置；技能不要求作者的账号、安装目录或研究项目路径。
+- `.gitignore` 降低误提交风险，不能移除已跟踪文件或 Git 历史内容。分享或更新仓库前检查实际提交文件和示例来源；曾公开的凭据需要撤销，删除当前文件不能使旧凭据失效。

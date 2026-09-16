@@ -2,19 +2,19 @@
   "schema_version": 1,
   "purpose": "Example record of measured style; adapt to the current request. Not an automatically applied plotting configuration.",
   "basis": {
-    "source": "Example values from a previous approved figure; replace with the current source and distinguish requested, measured or assumed values.",
+    "source": "Invented documentation values, not measurements from a user project. Replace with the current source and distinguish requested, measured or assumed values.",
     "scope": "Example only; not a default style for a new task.",
     "unresolved": []
   },
   "canvas": {
-    "width_mm": 266.7,
-    "height_mm": 355.6,
+    "width_mm": 180,
+    "height_mm": 120,
     "publication_width_mm": null
   },
   "text": {
     "family": "Arial",
-    "body_pt_at_canvas_size": 10,
-    "panel_letter_pt_at_canvas_size": 18,
+    "body_pt_at_canvas_size": 9,
+    "panel_letter_pt_at_canvas_size": 12,
     "dense_cell_pt_at_canvas_size": null
   },
   "marks": {

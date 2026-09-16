@@ -5,5 +5,34 @@ outputs/
 verification/
 *.opju
 *.opj
+# Local research inputs and derived documents belong outside this repository.
+inputs/
+data/
+private/
+local/
+*.csv
+*.tsv
+!examples/go-enrichment/demo.csv
+*.xlsx
+*.xls
+*.pptx
+*.ppt
+*.pdf
+*.log
+# Credentials and machine-local configuration must never be publication assets.
+.env
+.env.*
+.auth/
+.ssh/
+credentials.json
+credentials.*.json
+secrets.json
+secrets.*.json
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
 .DS_Store
 Thumbs.db
