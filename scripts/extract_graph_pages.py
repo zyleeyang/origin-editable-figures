@@ -75,6 +75,7 @@ def main():
 
     before = sha256(source)
     report = {'source': str(source), 'source_sha256': before,
+              'review_status': {'data': 'not_tested', 'visual': 'not_tested', 'interactive_editing': 'not_tested'},
               'retention': 'All non-graph pages retained; external links not audited.',
               'outputs': []}
     verification = output / 'verification'
@@ -145,6 +146,7 @@ def main():
             print('Saved and verified: ' + str(target), flush=True)
         assert sha256(source) == before, 'Source file changed during extraction.'
         report['source_unchanged'] = True
+        report['review_status']['data'] = 'passed'
         report['completed_utc'] = datetime.now(timezone.utc).isoformat()
     print(json.dumps(report, ensure_ascii=False), flush=True)
 

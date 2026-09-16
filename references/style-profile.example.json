@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "purpose": "Example record of measured style; adapt to the current request. Not an automatically applied plotting configuration.",
+  "basis": {
+    "source": "Example values from a previous approved figure; replace with the current source and distinguish requested, measured or assumed values.",
+    "scope": "Example only; not a default style for a new task.",
+    "unresolved": []
+  },
+  "canvas": {
+    "width_mm": 266.7,
+    "height_mm": 355.6,
+    "publication_width_mm": null
+  },
+  "text": {
+    "family": "Arial",
+    "body_pt_at_canvas_size": 10,
+    "panel_letter_pt_at_canvas_size": 18,
+    "dense_cell_pt_at_canvas_size": null
+  },
+  "marks": {
+    "source": "preserve current native plot settings unless requested",
+    "requested_changes_pt_at_canvas_size": {},
+    "data_driven_mappings": "preserve"
+  },
+  "groups": {
+    "source": "current data and approved reference",
+    "order": [],
+    "colors": {}
+  },
+  "axes": {
+    "limits_and_transforms": "preserve approved values; validate new data are not clipped",
+    "tick_policy": "keep_numeric_ticks",
+    "long_labels": "inspect longest label; adjust spacing or wrap before reducing all fonts"
+  },
+  "layout": {
+    "alignment_basis": "actual plot rectangles",
+    "panel_order": [],
+    "reserved_regions_mm": []
+  },
+  "invariants": [
+    "Keep source data, sample identity, curve order and approved statistics unchanged during style-only work.",
+    "Retain current user edits outside the requested changes."
+  ]
+}

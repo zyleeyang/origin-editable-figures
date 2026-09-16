@@ -27,6 +27,12 @@ description: Create, edit, verify, and split native editable Origin/OriginPro OP
 
 GO 富集分组柱形图可参考 [GO 示例说明](references/go-enrichment.md)，使用配套 `scripts/plot_go_enrichment.py`。示例中的布局和配色按当前需求调整，不自动筛选条目、排序或转换得分。
 
+## 视觉质量与有效迭代
+
+新图、换数据套样式或影响外观的修订，按 [样式、预览与修正](references/visual-quality.md) 执行：先确定当前样式参数，批量图先校准代表图，再查看实际导出图。用“具体问题 → 局部修改 → 重导复查”处理发现的缺陷；一次通过即可结束，不固定检查轮数。小改动沿用当前文件，只检查受影响部分和邻近布局。
+
+示例参数只供适配，不覆盖当前要求和已确认的用户修改。数据、视觉与可编辑性分别记录结果；未实际查看预览就标记视觉检查未完成。PPT组图还需查看实际组装页面。
+
 ## 保存后验收
 
 不能只检查文件存在或截图好看。保存后重新打开 OPJU，按本次改动检查：

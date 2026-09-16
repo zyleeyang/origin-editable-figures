@@ -83,6 +83,14 @@ python scripts/plot_go_enrichment.py --input examples/go-enrichment/demo.csv --o
 
 完整参数：`python scripts/plot_go_enrichment.py --help`。
 
+## 样式与视觉检查
+
+技能按当前参考确定尺寸、字体、点线、配色和布局，先校准代表图，再批量制作。模型需要打开真实导出的预览，针对具体缺陷修正并重新检查；通过即可结束，没有固定检查轮数。小修改沿用已有文件，不重新设计整组图。
+
+脚本的 `review_status` 将数据检查与视觉、交互编辑检查分开：脚本自动通过的数据核验，不会自动把后两项标为通过。成功导出PNG也不代表模型已经查看过它。程序退出状态和 `task_status` 只说明脚本运行情况，完整交付还需相应视觉及编辑验收。
+
+[视觉检查流程](references/visual-quality.md)包含长标签、热图、ROC、散点及组图的检查方向；[样式记录示例](references/style-profile.example.json)用于保存当前任务的参数，不会被绘图脚本自动执行，也不是所有图的默认版式。
+
 ## 自动关闭与并行使用
 
 示例脚本保存、重新打开核验和导出预览后，会关闭自己创建的独立 Origin 实例。核验记录包含该实例的 PID 和 `origin_session.exit_verified`；关闭失败不会报告任务完成。绘图报错、可捕获的 Ctrl+C、核验记录写入失败也会执行清理。需要继续编辑时，重新打开输出的 OPJU 即可。

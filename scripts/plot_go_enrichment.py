@@ -107,6 +107,7 @@ def build(args, source, data):
         raise ValueError('--y-max would clip a data value.')
     y_step = args.y_step or max(0.1, float(math.ceil(ymax / 7)))
     metadata = {'source_file': args.input.name, 'source_sha256': source_hash,
+                'review_status': {'data': 'not_tested', 'visual': 'not_tested', 'interactive_editing': 'not_tested'},
                 'records': len(data), 'statistics_recomputed': False,
                 'group_order': ['BP', 'CC', 'MF'],
                 'counts': {s: int((data.subgroup == full).sum()) for full, s, _ in GROUPS},
@@ -219,12 +220,13 @@ def build(args, source, data):
         if not graph.save_fig(str(preview), width=args.preview_width) or not preview.is_file():
             raise RuntimeError('Origin preview export failed.')
         assert hashlib.sha256(args.input.read_bytes()).hexdigest() == source_hash
+        metadata['review_status']['data'] = 'passed'
         metadata.update(reopened=True, data_and_label_mapping_verified=True,
                         graph_pages=1, layers=1, native_column_series=3,
                         source_unchanged=True, origin_version=op.lt_float('@V'),
                         visual_review='Inspect go_enrichment.png, especially after changing label lengths or group sizes.')
         print('Saved and reopened: ' + str(target), flush=True)
-    print('Origin closed; verification complete.', flush=True)
+    print('Origin closed; data checks complete. Visual review is still required.', flush=True)
 
 
 def main():
